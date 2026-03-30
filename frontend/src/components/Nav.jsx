@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/api';
@@ -7,52 +6,57 @@ import '../assets/style.css';
 const Nav = ({ name, setName }) => {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  
-  // Define menu variable with if statement
+
   let menu;
-  
+
   if (!name) {
-    // User is not logged in - show Login and Register
     menu = (
       <>
-        <li className="nav-item"> 
-          <Link to="/login" className="nav-link">Login</Link>
+        <li className="nav-item">
+          <Link to="/login" className="nav-link">
+            <i className="bi bi-box-arrow-in-right me-1"></i>Login
+          </Link>
         </li>
-        <li className="nav-item"> 
-          <Link to="/register" className="nav-link">Register</Link>
+        <li className="nav-item">
+          <Link to="/register" className="nav-link">
+            <i className="bi bi-person-plus me-1"></i>Register
+          </Link>
         </li>
       </>
     );
   } else {
-    // User is logged in - show Welcome and Logout
     menu = (
       <>
-        <li className="nav-item"> 
-          <span className="nav-link" style={{ color: '#fff' }}>Welcome, {name}</span>
+        <li className="nav-item">
+          <span className="nav-link nav-welcome">
+            <span className="nav-avatar">{name.charAt(0)}</span>
+            {name}
+          </span>
         </li>
-        <li className="nav-item"> 
-          <Link 
-            to="/login" 
-            className={`nav-link ${isLoggingOut ? 'disabled' : ''}`} 
+        <li className="nav-item">
+          <Link
+            to="/login"
+            className={`nav-link nav-logout ${isLoggingOut ? 'disabled' : ''}`}
             style={{ pointerEvents: isLoggingOut ? 'none' : 'auto' }}
             onClick={async (e) => {
               e.preventDefault();
               if (isLoggingOut) return;
-              
               setIsLoggingOut(true);
               try {
                 await api.post("/logout");
-                setName(''); // Reset name state to show Login/Register
+                setName('');
                 navigate('/login');
               } catch (err) {
                 console.error('Logout error:', err);
-                alert('Logout failed. Please try again.');
               } finally {
                 setIsLoggingOut(false);
               }
             }}
           >
-            {isLoggingOut ? 'Logging out...' : 'Logout'}
+            {isLoggingOut
+              ? <><i className="bi bi-arrow-repeat me-1"></i>Logging out...</>
+              : <><i className="bi bi-box-arrow-right me-1"></i>Logout</>
+            }
           </Link>
         </li>
       </>
@@ -60,19 +64,20 @@ const Nav = ({ name, setName }) => {
   }
 
   return (
-     <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        <div className="container-fluid"> 
-          <Link to={name ? "/home" : "/"} className="navbar-brand" >Home</Link>
-
-          <div >
-            <ul className="navbar-nav me-auto mb-2 mb-md-0">
-              {menu}
-            </ul>
-          </div>
+    <nav className="navbar navbar-expand-md navbar-dark">
+      <div className="container-fluid px-4">
+        <Link to={name ? "/home" : "/"} className="navbar-brand">
+          <i className="bi bi-layers-fill"></i>
+          Postify
+        </Link>
+        <div>
+          <ul className="navbar-nav flex-row gap-1 align-items-center">
+            {menu}
+          </ul>
         </div>
-      </nav>
-   )
-}
+      </div>
+    </nav>
+  );
+};
 
-export default Nav
-
+export default Nav;

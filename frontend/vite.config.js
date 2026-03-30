@@ -9,6 +9,7 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
   },
   server: {
+    historyApiFallback: true,
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',

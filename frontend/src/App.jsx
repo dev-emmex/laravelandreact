@@ -4,6 +4,8 @@ import Createnewpost from './pages/Createnewpost.jsx'
 import Editpost from './pages/Editpost.jsx'
 import Login from './pages/login.jsx'
 import Register from './pages/register.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'   
 import Landingpage from './pages/Landingpage.jsx'
 import { useState, useEffect } from 'react';
 
@@ -62,6 +64,8 @@ function App() {
         <Route path='/' element={<Landingpage />} />
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register />}/>
+        <Route path='/forgot-password' element={<ForgotPassword />}/>
+        <Route path='/reset-password' element={<ResetPassword />}/>
         <Route path='/home' element={<AuthGuard><Home /></AuthGuard>} />
         <Route path='/create-new-post' element={<AuthGuard><Createnewpost /></AuthGuard>}/>
         <Route path='/edit-post/:id' element={<AuthGuard><Editpost /></AuthGuard>}/>

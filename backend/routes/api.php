@@ -4,6 +4,9 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 
 
 // Add throttle to prevent brute force
@@ -54,3 +57,8 @@ Route::get('/debug-auth', function (Request $request) {
         'token_id' => $request->user()?->currentAccessToken()?->id,
     ]);
 })->middleware(['token.cookie', 'auth:sanctum']);
+
+
+// Password reset routes
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
+Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
