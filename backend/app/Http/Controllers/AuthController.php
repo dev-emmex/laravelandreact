@@ -39,7 +39,7 @@ class AuthController extends Controller
                 domain: null,
                 secure: false, // Allow in non-HTTPS for local development
                 httpOnly: true,
-                sameSite: null // Allow cookie to be sent in all contexts (including cross-origin)
+                sameSite: 'Lax'
             );
 
             return response()->json([
@@ -49,7 +49,6 @@ class AuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'token' => $token,
             ], Response::HTTP_CREATED)->withCookie($cookie);
 
         } catch (\Illuminate\Database\QueryException $e) {
@@ -95,7 +94,7 @@ class AuthController extends Controller
             domain: null,
             secure: false, // Allow in non-HTTPS for local development
             httpOnly: true,
-            sameSite: null // Allow cookie to be sent in all contexts (including cross-origin)
+            sameSite: 'Lax'
         );
 
         return response()->json([

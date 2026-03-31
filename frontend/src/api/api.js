@@ -12,9 +12,14 @@ const api = axios.create({
 
 // Add interceptors for handling tokens and errors
 api.interceptors.request.use(
-  (config) => {
-    // Note: This app uses cookie-based authentication (credentials: "include")
-    // Token-based auth is not currently implemented
+  async (config) => {
+    const method = config.method?.toLowerCase();
+    if (['post', 'put', 'delete', 'patch'].includes(method)) {
+      const hasCsrf = document.cookie.split('; ').some(c => c.startsWith('XSRF-TOKEN='));
+      if (!hasCsrf) {
+        await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
+      }
+    }
     return config;
   },
   (error) => {

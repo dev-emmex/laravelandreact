@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\UseTokenFromCookie;
+use App\Http\Middleware\CheckOrigin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,15 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function ($middleware) {
-
-        $middleware->alias([
-            'token.cookie' => UseTokenFromCookie::class,
-        ]);
-
-        // Removed EnsureFrontendRequestsAreStateful as it conflicts with our JWT cookie auth
-        // The token.cookie middleware is applied at route level instead
-    })
+    ->withMiddleware(function (Middleware $middleware) {
+    $middleware->statefulApi();
+    $middleware->alias([
+        'check.origin' => CheckOrigin::class,
+        'token.cookie' => \App\Http\Middleware\UseTokenFromCookie::class,
+    ]);
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
