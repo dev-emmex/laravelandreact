@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/user/Desktop/laravelandreact/frontend/src -type f \\\\\\(-name *.jsx -o -name *.js -o -name *.css \\\\\\))",
+      "Bash(php -l /Users/user/Desktop/laravelandreact/backend/app/Http/Controllers/AuthController.php)"
+    ]
+  }
+}
